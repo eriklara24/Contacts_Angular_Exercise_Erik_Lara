@@ -1,0 +1,21 @@
+<div style="margin-bottom: 1rem; margin-top: 1rem;" [ngStyle]="{'text-align': 'center'}">
+  <h1 [ngStyle]="{ 'margin-bottom.px': 16}">Contact Detail</h1>
+</div>
+<nz-card style="width:300px; margin-left: 2rem;" nzTitle="Info" [nzExtra]="extraTemplate">
+  <ng-container *ngIf="contact">
+  <p>{{contact.firstName}}</p>
+  <p>{{contact.lastName}}</p>
+  <p>{{contact.nickName}}</p>
+  <p *ngFor="let phone of contact.phones">{{phone}}</p>
+  <p *ngFor="let email of contact.emails">{{email}}</p>  
+  </ng-container>
+</nz-card>
+<ng-template #extraTemplate>
+  <a (click)="editContact()">Edit</a>
+</ng-template>
+
+<nz-modal [(nzVisible)]="editContactModalIsVisible" nzTitle="Edit Contact" (nzOnOk)="close()" (nzOnCancel)="close()">
+  <ng-container *nzModalContent>
+    <app-contact-form [contact]="contact"></app-contact-form>
+  </ng-container>
+</nz-modal>

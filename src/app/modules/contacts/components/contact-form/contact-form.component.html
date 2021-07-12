@@ -1,0 +1,64 @@
+<form [formGroup]="contactForm" style="border: 1px solid grey; width: 80%; margin: 0 auto;">  
+  <div style="text-align: center;">  
+    <h2 style="margin: 0.3rem;" nz-typography>New Contact</h2>
+  </div>
+  <br>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" for="firstName" >First Name</nz-form-label>
+      <input formControlName="firstName" type="text" id="firstName">
+      <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" style="width: 100%; color: red; text-align: center;">Name is required</div>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" for="lastName">Last Name</nz-form-label>
+      <input formControlName="lastName" type="text" id="lastName">
+  </nz-form-item >
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" for="nickName">Nick Name</nz-form-label>
+    <input formControlName="nickName" type="text" id="nickName">
+  </nz-form-item>
+
+  <div formArrayName="emailsFormArray">
+      <ng-container *ngIf="emailsFormArray">
+        <div *ngFor="let email of emailsFormArray.controls; index as i">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" for="'email'+i">Email {{i + 1}}</nz-form-label>
+              <input [formControlName]="i" type="email" id="'email'+i" email>
+              <button nz-button nzType="default" nzDanger (click)="deleteEmail(i)">-</button>
+              <div *ngIf="emailsFormArray.controls[i].errors" style="width: 100%; color: red; text-align: center;">Email is not valid</div>
+            </nz-form-item>
+        </div>
+      </ng-container>
+  </div>
+
+  <nz-form-item>
+    <div nz-col nzSpan="6"></div>
+    <button nz-button nzType="default" (click)="addEmail()">Add Email</button> 
+  </nz-form-item>
+  
+  <div formArrayName="phonesFormArray">
+    <ng-container *ngIf="phonesFormArray">
+      <div *ngFor="let phone of phonesFormArray.controls; index as i">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" for="'phone'+i">Phone {{i + 1}}</nz-form-label>
+            <input [formControlName]="i" type="phone" id="'phone'+i">
+            <button nz-button nzType="default" nzDanger (click)="deletePhone(i)">-</button> 
+        </nz-form-item>
+      </div>
+    </ng-container>
+</div>
+
+<nz-form-item>
+  <div nz-col nzSpan="6"></div>
+  <button nz-button nzType="default" (click)="addPhone()">Add Phone</button> 
+</nz-form-item>
+
+  <nz-form-item style="margin: 0 auto">
+      <button nz-button nzType="primary" (click)="createOrUpdateContact()" style="margin: 0 auto" [disabled]="firstName.invalid">
+        <span>{{ buttonText }}</span>
+      </button>
+  </nz-form-item >
+  <br>
+</form>
+<br>
