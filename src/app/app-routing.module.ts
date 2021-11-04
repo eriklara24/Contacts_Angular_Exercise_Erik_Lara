@@ -5,7 +5,12 @@ import { LandingComponent } from './modules/contacts/views/landing/landing.compo
 
 const routes: Routes = [
   {path: '', component: LandingComponent},
-  {path: 'contact-detail/:contactID', component: ContactDetailComponent}
+  {path: 'contact-detail/:contactID', component: ContactDetailComponent},
+  // {
+  //   path: 'contact-detail/:contactID',
+  //   loadChildren: () => import('./modules/contacts/views/contact-detail/contact-detail.component').then(m => m.ContactDetailComponent)
+  //   loadChildren: './modules/contacts/views/contact-detail/contact-detail.component'
+  // }
 ];
 
 @NgModule({

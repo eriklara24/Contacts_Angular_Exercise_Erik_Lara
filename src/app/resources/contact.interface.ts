@@ -1,8 +1,10 @@
-export default interface ContactI {
+interface ContactI {
   _id: string
   firstName: string
   lastName: string
   nickName: string
-  phones: number[]
+  phones: string[]
   emails: string[]
 }
+
+export default ContactI;

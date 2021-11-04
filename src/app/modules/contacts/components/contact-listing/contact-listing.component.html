@@ -5,9 +5,9 @@
         <button nz-button nzType="primary" (click)="newContactButton()">Add Conctact</button>
     </nz-list-item>
       <nz-list-item *ngFor="let contact of contacts">
-        <span nz-typography><mark>{{contact.nickName}}</mark></span>
         <span nz-typography><mark>{{contact.firstName}} {{contact.lastName}}</mark></span>
-        <span *ngIf="contact.phones[0]">{{contact.phones[0]}}</span>
+        <span nz-typography><mark>{{contact.nickName | uppercase }}</mark></span>
+        <span >{{contact.phones[0]}}</span>
         <div>
           <button nz-button nzType="default"><a [routerLink]="['/contact-detail', contact._id]" routerLinkActive="active">Contact Info</a></button>
           <button nz-button nzType="primary" nzDanger (click)="deleteContactButton(contact._id)">Delete</button>
@@ -16,9 +16,9 @@
     </nz-list>
 </ul>
 
-<nz-modal [(nzVisible)]="newContactModalIsVisible" nzTitle="New Contact" (nzOnOk)="close()" (nzOnCancel)="close()" nzOkText="Finshed">
+<nz-modal [(nzVisible)]="newContactModalIsVisible" nzTitle="New Contact" (nzOnCancel)="close()" [nzFooter]="null">
   <ng-container *nzModalContent>
-    <app-contact-form></app-contact-form>
+    <app-contact-form [modalIsVisible]="newContactModalIsVisible" (closeModal)="newContactModalIsVisible=$event"></app-contact-form>
   </ng-container>
 </nz-modal>
 

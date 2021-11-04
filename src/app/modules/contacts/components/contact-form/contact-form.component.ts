@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 import { ContactsApiService } from '../../../../services/contacts/contacts-api.service';
 
@@ -10,10 +10,15 @@ import { ContactsApiService } from '../../../../services/contacts/contacts-api.s
 export class ContactForm implements OnInit {
 
   @Input() contact: any = {};
+  @Input() modalIsVisible: boolean;
+  @Output() closeModal = new EventEmitter<boolean>();
+
   buttonText: string = 'Save';
-  
+  successMessage: boolean = false;
+  errorMessage: boolean = false;
+
   contactForm: FormGroup = this.formBuilder.group({
-    _id: this.contact._id,
+    id: new FormControl(''),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl(''),
     nickName: new FormControl(''),
@@ -37,10 +42,10 @@ export class ContactForm implements OnInit {
     private contactsApiService: ContactsApiService,
     private formBuilder: FormBuilder
   ) {
+    this.modalIsVisible = true;
   }
 
   ngOnInit(): void {
-    console.log(this.contact);
     if (Object.keys(this.contact).length === 0 && this.contact.constructor === Object) {
       this.buttonText = 'Create';
       this.contact = {
@@ -53,6 +58,7 @@ export class ContactForm implements OnInit {
       };
     }
 
+    this.contactForm.controls['id'].setValue(this.contact._id);
     this.contactForm.controls['firstName'].setValue(this.contact.firstName);
     this.contactForm.controls['lastName'].setValue(this.contact.lastName);
     this.contactForm.controls['nickName'].setValue(this.contact.nickName);
@@ -84,16 +90,50 @@ export class ContactForm implements OnInit {
     this.phonesFormArray.removeAt(index);
   }
 
-  createOrUpdateContact(): void{
+  close() {
+    this.modalIsVisible = false;
+    this.closeModal.emit(this.modalIsVisible);
+  }
+
+  createOrUpdateContact(): void {
     if (this.firstName) {
       try {
+        let response: any;
+  
         if (this.contact._id !== undefined && this.contact._id !== '' ) {
-          this.contactsApiService.updateContact(this.contactForm.value).subscribe();
+          this.contactsApiService.updateContact(this.contactForm.value);
+          if (!response!.ok) {
+            this.errorMessage = true;
+            setTimeout(() => {
+              this.errorMessage = false;
+            }, 1000);
+          } else {
+            this.successMessage = true;
+            setTimeout(() => {
+              this.modalIsVisible = false;
+              this.closeModal.emit(this.modalIsVisible);
+            }, 1000);
+          }
         } else {
-          this.contactsApiService.createContact(this.contactForm.value).subscribe();
+          this.contactsApiService.createContact(this.contactForm.value);
+          if (!response!.ok) {
+            this.errorMessage = true;
+            setTimeout(() => {
+              this.errorMessage = false;
+            }, 1000);
+          } else {
+            this.successMessage = true;
+            setTimeout(() => {
+              this.modalIsVisible = false;
+              this.closeModal.emit(this.modalIsVisible);
+            }, 1000);
+          }
         }
       } catch (error) {
-        console.log(error);
+        this.errorMessage = true;
+        setTimeout(() => {
+          this.errorMessage = false;
+        }, 1000);
       } 
     }
   }

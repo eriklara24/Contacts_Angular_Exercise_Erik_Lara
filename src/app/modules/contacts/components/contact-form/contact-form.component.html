@@ -42,23 +42,38 @@
       <div *ngFor="let phone of phonesFormArray.controls; index as i">
         <nz-form-item>
           <nz-form-label [nzSpan]="6" for="'phone'+i">Phone {{i + 1}}</nz-form-label>
-            <input [formControlName]="i" type="phone" id="'phone'+i">
+            <input [formControlName]="i" type="text" id="'phone'+i">
             <button nz-button nzType="default" nzDanger (click)="deletePhone(i)">-</button> 
         </nz-form-item>
       </div>
     </ng-container>
-</div>
+  </div>
 
-<nz-form-item>
-  <div nz-col nzSpan="6"></div>
-  <button nz-button nzType="default" (click)="addPhone()">Add Phone</button> 
-</nz-form-item>
-
-  <nz-form-item style="margin: 0 auto">
-      <button nz-button nzType="primary" (click)="createOrUpdateContact()" style="margin: 0 auto" [disabled]="firstName.invalid">
-        <span>{{ buttonText }}</span>
-      </button>
-  </nz-form-item >
-  <br>
+  <nz-form-item>
+    <div nz-col nzSpan="6"></div>
+    <button nz-button nzType="default" (click)="addPhone()">Add Phone</button> 
+  </nz-form-item>
 </form>
 <br>
+
+<button nz-button nzType="primary" (click)="close()" style="margin-left: 10%;" nzDanger>
+  <span>Cancelar</span>
+</button>
+
+<button nz-button nzType="primary" (click)="createOrUpdateContact()" style="display: inline-flex; float: right; margin-right: 10%" [disabled]="firstName.invalid">
+  <span>{{ buttonText }}</span>
+</button>
+
+<div *ngIf="successMessage" class="div-message">
+  <br>
+  <img src="/assets/done.jpg" alt="done">
+  <br>
+  <h2>Success</h2>
+</div>
+
+<div *ngIf="errorMessage" class="div-message">
+  <br>
+  <img src="/assets/error.png" alt="error">
+  <br>
+  <h2>Ocurrio un error</h2>
+</div>

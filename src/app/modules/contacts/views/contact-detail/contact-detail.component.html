@@ -14,8 +14,8 @@
   <a (click)="editContact()">Edit</a>
 </ng-template>
 
-<nz-modal [(nzVisible)]="editContactModalIsVisible" nzTitle="Edit Contact" (nzOnOk)="close()" (nzOnCancel)="close()">
+<nz-modal [(nzVisible)]="editContactModalIsVisible" nzTitle="Edit Contact" (nzOnOk)="close()" (nzOnCancel)="close()" [nzFooter]="null">
   <ng-container *nzModalContent>
-    <app-contact-form [contact]="contact"></app-contact-form>
+    <app-contact-form [contact]="contact" [modalIsVisible]="editContactModalIsVisible" (closeModal)="editContactModalIsVisible=$event"></app-contact-form>
   </ng-container>
 </nz-modal>

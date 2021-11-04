@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactsApiService } from '../../../../services/contacts/contacts-api.service';
-import ContactsI from '../../../../resources/contacts.interface';
+import ContactsI from '../../../../resources/contact.interface';
 
 @Component({
   selector: 'app-contact-listing',
@@ -36,8 +36,9 @@ export class ContactListingComponent implements OnInit {
   }
   
   deleteContact() {
-    this.contactsApiService.deleteContact(this.deleteID).subscribe();
-    this.contactsApiService.getAllContacts().subscribe(data => (this.contacts = data));
+    this.contactsApiService.deleteContact(this.deleteID).subscribe(() => {
+      this.contactsApiService.getAllContacts().subscribe(data => (this.contacts = data));
+    });
     this.deleteModalIsVisible = false;
   }
 }
